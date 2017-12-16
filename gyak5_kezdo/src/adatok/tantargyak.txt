@@ -1,0 +1,6 @@
+Progi1;PRO1KOD;3
+Progi2;PRO2KOD;4
+Progi3;PRO3KOD;5
+Matek1;MAT1KOD;3
+Matek2;MAT2KOD;3
+Adatbazis1;AB1KOD;4

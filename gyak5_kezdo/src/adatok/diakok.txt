@@ -1,0 +1,6 @@
+Kis Péter;KIPEPTE;1987;k
+Nagy János;NAJAPTE;1997
+Sovány Gábor;SOGAPTE;1995
+Kövér Béla;KIBEPTE;1990;k
+Alacsony Jenő;ALJEPTE;1996
+Magas Pál;MAPAPTE;1991;k
