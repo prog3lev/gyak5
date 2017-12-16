@@ -4,19 +4,36 @@
  */
 package feluletek;
 
+import grafikonhoz.Oszlop;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
+import vezerles.Vezerlo.OszlopTipus;
 
 /**
  *
  * @author :)
  */
 public class KimutatasPanel extends javax.swing.JPanel {
+    
+    private List<Oszlop> diakOszlopok = new ArrayList<>();
+    private List<Oszlop> koltsegteritesesOszlopok = new ArrayList<>();
 
+    private Color diakSzin;
+    private Color ktgDiakSzin;
+    private int oszlopNoveloLepeskoz;
     
     public KimutatasPanel() {
         initComponents();   
         lblDiak.setBackground(Color.blue);
         lblKoltseges.setBackground(Color.red);        
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); 
+        rajzolas(g);
     }
     
     /**
@@ -95,6 +112,53 @@ public class KimutatasPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblDiak;
     private javax.swing.JLabel lblKoltseges;
     // End of variables declaration//GEN-END:variables
+
+    public void oszlopGeneralas(){
+        int[] xDiak = {22, 97, 172, 247, 322};
+        int[] xKtgDiak = {57, 132, 207, 282, 357};
+        for (int x : xDiak) {
+            diakOszlopok.add(new Oszlop(x, Oszlop.getAlap(), diakSzin));
+        }
+        
+        for (int x : xKtgDiak) {
+            koltsegteritesesOszlopok.add(new Oszlop(x, Oszlop.getAlap(), ktgDiakSzin));
+        }   
+    }
+
+    public void oszlopModositas(OszlopTipus tipus, int jegy) {
+        Oszlop oszlop;
+        if(tipus == OszlopTipus.KOLTSEGTERITESES){
+            oszlop = koltsegteritesesOszlopok.get(jegy-1);
+        }else{
+            oszlop = diakOszlopok.get(jegy-1);
+        }
+        oszlop.setFelsoY(oszlop.getFelsoY() - oszlopNoveloLepeskoz);
+        
+        repaint();
+    }
+
+    public void setDiakSzin(Color diakSzin) {
+        this.diakSzin = diakSzin;
+    }
+
+    public void setKtgDiakSzin(Color ktgDiakSzin) {
+        this.ktgDiakSzin = ktgDiakSzin;
+    }
+
+    public void setOszlopNoveloLepeskoz(int oszlopNoveloLepeskoz) {
+        this.oszlopNoveloLepeskoz = oszlopNoveloLepeskoz;
+    }
+
+  
+    public void rajzolas(Graphics g) {
+        for (Oszlop oszlop : diakOszlopok) {
+            oszlop.rajzol(g);
+        }
+        for (Oszlop oszlop : koltsegteritesesOszlopok) {
+            oszlop.rajzol(g);
+        }       
+    }
+
 
 
 }

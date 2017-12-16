@@ -6,6 +6,7 @@ package vezerles;
 
 import alaposztalyok.Diak;
 import grafikonhoz.Oszlop;
+import java.awt.Color;
 import java.util.Calendar;
 
 /**
@@ -72,7 +73,7 @@ public class InditoFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InditoFrame().setVisible(true);
+                new InditoFrame().indit();
             }
         });
     }
@@ -94,7 +95,22 @@ public class InditoFrame extends javax.swing.JFrame {
         Diak.setFelsoJegy(5);
         
         Oszlop.setAlap(330);
-        Oszlop.setSzelesseg(30);              
+        Oszlop.setSzelesseg(30);  
+        
+        kimutatasPanel1.setDiakSzin(Color.blue);
+        kimutatasPanel1.setKtgDiakSzin(Color.red);
+        kimutatasPanel1.setOszlopNoveloLepeskoz(2);
+
+    }
+
+    private void indit() {
+        this.setVisible(true);
+        statikusAdatok();
+        
+        Vezerlo vezerlo = new Vezerlo(diakPanel1, kimutatasPanel1);
+        diakPanel1.setVezerlo(vezerlo);
+        
+        vezerlo.indit();
     }
 
 }

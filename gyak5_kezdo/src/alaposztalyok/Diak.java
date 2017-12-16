@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Diak {
+public class Diak implements Comparable<Diak>{
     private String nev;
     private String kod;
     private int szuletesiEv;
@@ -60,7 +60,11 @@ public class Diak {
 
     @Override
     public String toString() {
-        return nev + " (" + kod + ")" ;
+        String temp = nev + " (" + kod + ")" ;
+        if(vizsgaSzam > 0){
+            return temp + ", " + teljesitettKredit + " kredit";
+        }
+        return temp;
     }
 
     public List<Tantargy> getTantargyak() {
@@ -116,5 +120,10 @@ public class Diak {
     public static void setFelsoJegy(int felsoJegy) {
         Diak.felsoJegy = felsoJegy;
     }    
+
+    @Override
+    public int compareTo(Diak o) {
+        return o.teljesitettKredit - this.teljesitettKredit;
+    }
 
 }

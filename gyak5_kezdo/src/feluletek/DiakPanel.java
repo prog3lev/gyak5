@@ -4,6 +4,15 @@
  */
 package feluletek;
 
+import alaposztalyok.Diak;
+import alaposztalyok.Tantargy;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import modellcsomag.RendezhetoListModel;
+import vezerles.Vezerlo;
+
 
 /**
  *
@@ -11,9 +20,22 @@ package feluletek;
  */
 public class DiakPanel extends javax.swing.JPanel{
 
+    private RendezhetoListModel<Diak> diakModel = 
+            new RendezhetoListModel<Diak>();
+    private DefaultComboBoxModel<Tantargy> tantargyBoxModel = 
+            new DefaultComboBoxModel<>();
+    private Vezerlo vezerlo;
+    
     public DiakPanel() {
-        initComponents();      
+        initComponents();   
+        lstDiakok.setModel(diakModel);
+        cmbTantargyak.setModel(tantargyBoxModel);
     }
+
+    public void setVezerlo(Vezerlo vezerlo) {
+        this.vezerlo = vezerlo;
+    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,6 +62,7 @@ public class DiakPanel extends javax.swing.JPanel{
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("A diákok:");
 
+        lstDiakok.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(lstDiakok);
 
         lblTargy.setText("Tárgy:");
@@ -49,6 +72,11 @@ public class DiakPanel extends javax.swing.JPanel{
         cmbTantargyak.setPreferredSize(new java.awt.Dimension(130, 23));
 
         btnVizsga.setText("Vizsga");
+        btnVizsga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVizsgaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -96,17 +124,54 @@ public class DiakPanel extends javax.swing.JPanel{
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnVizsgaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVizsgaActionPerformed
+        try {
+            Diak diak = lstDiakok.getSelectedValue();
+            Tantargy tantargy = (Tantargy) cmbTantargyak.getSelectedItem();
+            if (diak == null || tantargy == null) {
+                throw new NullPointerException();
+            }
+            int jegy = Integer.parseInt(txtJegy.getText());
+            vezerlo.vizsgaztatas(diak, tantargy, jegy);
+            
+        } catch (NullPointerException e1) {
+            e1.printStackTrace();
+            JOptionPane.showMessageDialog(jScrollPane1, "Hibás választás");
+        } catch (NumberFormatException e2){
+            JOptionPane.showMessageDialog(jScrollPane1, "Hibás jegy");
+        }
+    }//GEN-LAST:event_btnVizsgaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVizsga;
-    private javax.swing.JComboBox<String> cmbTantargyak;
+    private javax.swing.JComboBox<Tantargy> cmbTantargyak;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblJegy;
     private javax.swing.JLabel lblTargy;
     private javax.swing.JLabel lblVizsgazo;
-    private javax.swing.JList<String> lstDiakok;
+    private javax.swing.JList<Diak> lstDiakok;
     private javax.swing.JTextField txtJegy;
     // End of variables declaration//GEN-END:variables
 
+    public void kiir(List<Diak> diakok, List<Tantargy> tantargyak) {
 
+        Collections.sort(tantargyak);
+        for (Tantargy tantargy : tantargyak) {
+            tantargyBoxModel.addElement(tantargy);
+        }
+        
+        for (Diak diak : diakok) {
+            diakModel.addElement(diak);
+        }
+    }
+
+    public void kiirDiakEredmeny(Diak diak, Tantargy tantargy, int jegy) {
+        lblVizsgazo.setText(String.format("%s, %s, %s, %d", 
+                diak.getNev(), diak.getKod(), 
+                tantargy.getNev(), jegy));
+        
+        diakModel.removeElement(diak);
+        diakModel.addElement(diak, true);
+    }
 }
